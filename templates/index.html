@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEJA Tuition Calculator</title>
+</head>
+<body>
+    <h1>NEJA Tuition Calculator</h1>
+
+    <form method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Grade</th>
+                    <th>Number of Students</th>
+                </tr>
+            </thead>
+            <tbody>
+                <label for="AGI_label">Family AGI (Previous Year):</label>
+                    <input type="text" name="AGI" id="AGI" placeholder="Enter number" value="{{agi}}">
+                <tr>
+                    <td>
+                        <label for="ECC5F_label">ECC: 5 Full Days</label>
+                        </td>
+                    <td>
+                        <select name="ECC5F" id="ECC5F">
+                                <option value="0" {% if ECC5F == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if ECC5F == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if ECC5F == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if ECC5F == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if ECC5F == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if ECC5F == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ECC3F_label">ECC: 3 Full Days</label>
+                        </td>
+                    <td>
+                        <select name="ECC3F" id="ECC3F">
+                                <option value="0" {% if ECC3F == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if ECC3F == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if ECC3F == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if ECC3F == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if ECC3F == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if ECC3F == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ECC5H_label">ECC: 5 Half Days</label>
+                        </td>
+                    <td>
+                        <select name="ECC5H" id="ECC5H">
+                                <option value="0" {% if ECC5H == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if ECC5H == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if ECC5H == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if ECC5H == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if ECC5H == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if ECC5H == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ECC3H_label">ECC: 3 Half Days</label>
+                        </td>
+                    <td>
+                        <select name="ECC3H" id="ECC3H">
+                                <option value="0" {% if ECC3H == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if ECC3H == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if ECC3H == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if ECC3H == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if ECC3H == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if ECC3H == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ECC++_label">ECC Extra Care</label>
+                        </td>
+                    <td>
+                        <select name="ECCPP" id="ECCPP">
+                                <option value="0" {% if ECCPP == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if ECCPP == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if ECCPP == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if ECCPP == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if ECCPP == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if ECCPP == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="K_label">Kindergarden</label>
+                        </td>
+                    <td>
+                        <select name="K" id="K">
+                                <option value="0" {% if K == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if K == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if K == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if K == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if K == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if K == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="G1_label">1st Grade</label>
+                        </td>
+                    <td>
+                        <select name="G1" id="G1">
+                                <option value="0" {% if G1 == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if G1 == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if G1 == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if G1 == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if G1 == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if G1 == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="G25_label">Grades 2-5</label>
+                        </td>
+                    <td>
+                        <select name="G25" id="G25">
+                                <option value="0" {% if G25 == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if G25 == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if G25 == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if G25 == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if G25 == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if G25 == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="G6_label">Grade 6</label>
+                        </td>
+                    <td>
+                        <select name="G6" id="G6">
+                                <option value="0" {% if G6 == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if G6 == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if G6 == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if G6 == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if G6 == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if G6 == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="G78_label">Grade 7-8</label>
+                        </td>
+                    <td>
+                        <select name="G78" id="G78">
+                                <option value="0" {% if G78 == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if G78 == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if G78 == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if G78 == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if G78 == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if G78 == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="G912_label">Grade 9-12</label>
+                        </td>
+                    <td>
+                        <select name="G912" id="G912">
+                                <option value="0" {% if G912 == "0" %} selected {%endif%}>0</option>
+                                <option value="1" {% if G912 == "1" %} selected {%endif%}>1</option>
+                                <option value="2" {% if G912 == "2" %} selected {%endif%}>2</option>
+                                <option value="3" {% if G912 == "3" %} selected {%endif%}>3</option>
+                                <option value="4" {% if G912 == "4" %} selected {%endif%}>4</option>
+                                <option value="5" {% if G912 == "5" %} selected {%endif%}>5</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if total %}
+    <h2>Your Total Tuition is:</h2>
+        <label>
+            {{total}}
+        </label>
+    {% endif %}
+</body>
+</html>

@@ -1,11 +1,4 @@
 class Family:
-    RATES = {
-        "K": 10000,
-        "P": 12000,
-        1: 10000,
-        2: 10000,
-    }
-
     def __init__(self, agi: int, students: dict):
         self.agi = agi
         self.students = students
@@ -21,23 +14,59 @@ class Family:
 
         return 0.20
 
-    def get_uncapped_tuition(self):
-        s = 0
-        for key, value in self.students:
-            s += value * self.RATES[key]
 
-        return s
+class Tuition:
+    def __init__(self, tuition_file):
+        with open(tuition_file, "r") as f:
+            lines = f.read().strip().split("\n")[1:]
+
+        self.grades = {}
+        for line in lines:
+            grade, subs, tuition, frac = line.split(",")
+            self.grades[grade] = {
+                "YesSubsidy": float(subs),
+                "NoSubsidy": float(tuition),
+                "Fraction": float(frac),
+            }
+
+    def get_tuitions(self, family: Family, subsidy: bool = False):
+        if subsidy:
+            subsidy = "YesSubsidy"
+        else:
+            subsidy = "NoSubsidy"
+
+        s1 = 0
+        s2 = 0
+        for key, value in family.students.items():
+            grade = self.grades[key]
+            s1 += value * grade[subsidy] * grade["Fraction"]
+            s2 += value * grade[subsidy] * (1 - grade["Fraction"])
+
+        return s1, s2
+
+    def get_total_tuition(self, family: Family):
+        cappable, uncappable = self.get_tuitions(family)
+        return uncappable + min(cappable, family.max_tuition)
 
 
 if __name__ == "__main__":
-    from matplotlib.pyplot import plot, show
+    from matplotlib.pyplot import subplots, show
 
+    tuition = Tuition("2025tuition.csv")
+
+    students = {"ECC5F": 1, "G25": 1, "G78": 1}
+    print(tuition.get_total_tuition(Family(200000, students)))
     x = []
     y = []
-    for agi in range(20000, 1_000_000, 10000):
-        x.append(agi)
-        f = Family(agi, {})
-        y.append(f.max_tuition)
+    z = []
+    for agi in range(20000, 500_000, 1000):
+        x.append(agi / 1000)
+        family = Family(agi, students)
+        y.append(family.max_tuition / 1000)
+        z.append(tuition.get_total_tuition(family) / 1000)
 
-    plot(x, y)
+    fig, ax = subplots()
+    ax.plot(x, y)
+    ax.plot(x, z)
+    ax.grid()
     show()

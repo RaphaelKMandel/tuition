@@ -19,7 +19,7 @@ def main():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition("home/RaphaelKMandel/tuition/2025tuition.csv")
+    tuition = Tuition("/home/RaphaelMandel/tuition/2025tuition.csv")
     students = {
         "ECC5F": int(form.ECC5F.data),
         "ECC3F": int(form.ECC3F.data),
@@ -33,9 +33,10 @@ def main():
         "G78": int(form.G78.data),
         "G912": int(form.G912.data),
     }
-    family = Family(form.agi.data, students)
-
     AGI = int(form.AGI.data)
+    family = Family(AGI, students)
+
+
     subsidy = bool(form.subsidy.data)
     cappable, uncappable = tuition.get_tuitions(family, subsidy)
     subtotal = cappable + uncappable

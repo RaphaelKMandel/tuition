@@ -6,7 +6,7 @@ NOS = [0, 1, 2, 3, 4, 5, 6]
 
 
 class NEJAForm(FlaskForm):
-    agi = IntegerField(
+    AGI = IntegerField(
         "AGI", validators=[DataRequired(), NumberRange(min=0, max=10_000_000)]
     )
     subsidy = BooleanField("subsidy")

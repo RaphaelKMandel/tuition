@@ -1,5 +1,7 @@
-from tuition import Tuition, Family
 from flask import Flask, render_template, request
+
+from tuition import Tuition, Family
+
 
 app = Flask(__name__)
 
@@ -8,6 +10,7 @@ app = Flask(__name__)
 def home():
     if request.method == "POST":
         agi = int(request.form.get("AGI"))
+        subsidy = request.form.get("subsidy")
         students = {
             "ECC5F": int(request.form.get("ECC5F")),
             "ECC3F": int(request.form.get("ECC3F")),
@@ -25,12 +28,14 @@ def home():
         tuition = Tuition("2025tuition.csv")
         family = Family(agi, students)
 
-        total = tuition.get_total_tuition(family)
+        print("subsidy", subsidy, bool(subsidy))
+        total = tuition.get_total_tuition(family, subsidy=bool(subsidy))
 
         return render_template(
             "index.html",
             total=f"${total:,.2f}",
             agi=agi,
+            subsidy=subsidy,
             **students,
         )
 

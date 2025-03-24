@@ -23,11 +23,14 @@ class Tuition:
         self.grades = {}
         for line in lines:
             grade, subs, tuition, frac = line.split(",")
+            print(grade, subs, tuition, frac)
             self.grades[grade] = {
                 "YesSubsidy": float(subs),
                 "NoSubsidy": float(tuition),
                 "Fraction": float(frac),
             }
+
+        print(self.grades)
 
     def get_tuitions(self, family: Family, subsidy: bool = False):
         if subsidy:
@@ -44,8 +47,8 @@ class Tuition:
 
         return s1, s2
 
-    def get_total_tuition(self, family: Family):
-        cappable, uncappable = self.get_tuitions(family)
+    def get_total_tuition(self, family: Family, subsidy: bool = False):
+        cappable, uncappable = self.get_tuitions(family, subsidy)
         return uncappable + min(cappable, family.max_tuition)
 
 

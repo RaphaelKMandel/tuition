@@ -18,7 +18,9 @@
             </thead>
             <tbody>
                 <label for="AGI_label">Family AGI (Previous Year):</label>
-                    <input type="text" name="AGI" id="AGI" placeholder="Enter number" value="{{agi}}">
+                <input type="text" name="AGI" id="AGI" placeholder="Enter number" value="{{agi}}">
+                <label for="Subsidy_label">Use Subsidy Rates? </label>
+                    <input type="checkbox" name="subsidy" id="subsidy" value="true" {% if subsidy == "true" %} checked {% endif %}>
                 <tr>
                     <td>
                         <label for="ECC5F_label">ECC: 5 Full Days</label>
@@ -201,10 +203,7 @@
     </form>
 
     {% if total %}
-    <h2>Your Total Tuition is:</h2>
-        <label>
-            {{total}}
-        </label>
+        <h2>Your Total NEJA Tuition is: {{total}} </h2>
     {% endif %}
 </body>
 </html>

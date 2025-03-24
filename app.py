@@ -19,7 +19,7 @@ def main():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition("~/tuition/2025tuition.csv")
+    tuition = Tuition("home/RaphaelKMandel/tuition/2025tuition.csv")
     students = {
         "ECC5F": int(form.ECC5F.data),
         "ECC3F": int(form.ECC3F.data),

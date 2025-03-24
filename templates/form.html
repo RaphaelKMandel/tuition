@@ -127,6 +127,16 @@
     </form>
 
     {% if total %}
+        <h2>Your Inputs</h2>
+        {% for key, value in students.items() %}
+            {% if value %}
+                {{key}}={{value}}
+            {% endif %}
+        {% endfor %}
+        <h2>Your NEJA Tuition Cap is: {{max_tuition}}</h2>
+        <h2>Yout Total Tuition is: {{subtotal}}</h2>
+        <h2>Yout Total Cappable Tuition is: {{cappable}}</h2>
+        <h2>Yout Total Uncappable Tuition is: {{uncappable}}</h2>
         <h2>Your Total NEJA Tuition is: {{total}} </h2>
     {% endif %}
 </body>

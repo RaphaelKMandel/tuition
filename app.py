@@ -8,14 +8,18 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "191234325129341234"
 
 
+def format(amount):
+    return f"${amount:,.2f}"
+
+
 @app.route("/", methods=["GET", "POST"])
-def test():
+def main():
     form = NEJAForm()
     if not form.validate_on_submit():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition("2025tuition.csv")
+    tuition = Tuition("~/tuition/2025tuition.csv")
     students = {
         "ECC5F": int(form.ECC5F.data),
         "ECC3F": int(form.ECC3F.data),
@@ -31,10 +35,31 @@ def test():
     }
     family = Family(form.agi.data, students)
 
-    total = tuition.get_total_tuition(family, subsidy=bool(form.subsidy.data))
-    total = f"${total:,.2f}"
+    AGI = int(form.AGI.data)
+    subsidy = bool(form.subsidy.data)
+    cappable, uncappable = tuition.get_tuitions(family, subsidy)
+    subtotal = cappable + uncappable
+    total = tuition.get_total_tuition(family, subsidy=subsidy)
 
-    return render_template("form.html", form=form, total=total)
+    max_tuition = family.max_tuition
+
+    max_tuition = f"${max_tuition:,.2f}"
+    subtotal = f"${subtotal:,.2f}"
+    total = f"${total:,.2f}"
+    cappable = f"${cappable:,.2f}"
+    uncappable = f"${uncappable:,.2f}"
+
+    return render_template(
+        "form.html",
+        form=form,
+        AGI=AGI,
+        max_tuition=max_tuition,
+        subtotal=subtotal,
+        total=total,
+        cappable=cappable,
+        uncappable=uncappable,
+        students=students,
+    )
 
 
 if __name__ == "__main__":

@@ -1,8 +1,12 @@
+import pathlib
 from flask import Flask, render_template, request
+
 
 from tuition import Tuition, Family
 from index import NEJAForm
 
+
+HOME = pathlib.Path.home()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "191234325129341234"
@@ -19,7 +23,7 @@ def main():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition("/home/RaphaelMandel/tuition/2025tuition.csv")
+    tuition = Tuition(f"{HOME}/tuition/2025tuition.csv")
     students = {
         "ECC5F": int(form.ECC5F.data),
         "ECC3F": int(form.ECC3F.data),

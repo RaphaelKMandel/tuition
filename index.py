@@ -7,10 +7,10 @@ NOS = [0, 1, 2, 3, 4, 5, 6]
 
 class NEJAForm(FlaskForm):
     AGI = IntegerField(
-        "AGI", validators=[DataRequired(), NumberRange(min=0, max=10_000_000)]
+        "AGI", default=100000, render_kw={"step": 1000}, validators=[DataRequired(), NumberRange(min=0, max=10_000_000)]
     )
     subsidy = BooleanField("subsidy")
-    ECC5F = SelectField(label="ECC5F", choices=NOS)
+    ECC5F = IntegerField(label="ECC5F", default=0, validators=[NumberRange(min=0,max=10)])
     ECC3F = SelectField(label="ECC3F", choices=NOS)
     ECC5H = SelectField(label="ECC5H", choices=NOS)
     ECC3H = SelectField(label="ECC3H", choices=NOS)

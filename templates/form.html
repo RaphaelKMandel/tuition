@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEJA Tuition Calculator</title>
+</head>
+<body>
+    <h1>NEJA Tuition Calculator</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <table>
+            <thead>
+                <tr>
+                    <th>Grade</th>
+                    <th>Number of Students</th>
+                </tr>
+            </thead>
+            <tbody>
+                <label>Family AGI (Previous Year):</label>
+                    {{form.agi()}}
+                <label>Use Subsidy Rates? </label>
+                    {{form.subsidy()}}
+                <tr>
+                    <td>
+                        <label>ECC: 5 Full Days</label>
+                        </td>
+                    <td>
+                      {{form.ECC5F()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>ECC: 3 Full Days</label>
+                        </td>
+                    <td>
+                      {{form.ECC3F()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>ECC: 5 Half Days</label>
+                        </td>
+                    <td>
+                      {{form.ECC5H()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>ECC: 3 Half Days</label>
+                        </td>
+                    <td>
+                            {{form.ECC3H()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>ECC Extra Care</label>
+                        </td>
+                    <td>
+                            {{form.ECCPP()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Kindergarden</label>
+                        </td>
+                    <td>
+                            {{form.K()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>1st Grade</label>
+                        </td>
+                    <td>
+                            {{form.G1()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Grades 2-5</label>
+                        </td>
+                    <td>
+                            {{form.G25()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Grade 6</label>
+                        </td>
+                    <td>
+                            {{form.G6()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Grade 7-8</label>
+                        </td>
+                    <td>
+                            {{form.G78()}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Grade 9-12</label>
+                        </td>
+                    <td>
+                            {{form.G912()}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+            {{form.submit()}}
+    </form>
+
+    {% if total %}
+        <h2>Your Total NEJA Tuition is: {{total}} </h2>
+    {% endif %}
+</body>
+</html>

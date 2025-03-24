@@ -1,45 +1,40 @@
 from flask import Flask, render_template, request
 
 from tuition import Tuition, Family
+from index import NEJAForm
 
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "191234325129341234"
 
 
 @app.route("/", methods=["GET", "POST"])
-def home():
-    if request.method == "POST":
-        agi = int(request.form.get("AGI"))
-        subsidy = request.form.get("subsidy")
-        students = {
-            "ECC5F": int(request.form.get("ECC5F")),
-            "ECC3F": int(request.form.get("ECC3F")),
-            "ECC5H": int(request.form.get("ECC5H")),
-            "ECC3H": int(request.form.get("ECC3H")),
-            "ECCPP": int(request.form.get("ECCPP")),
-            "K": int(request.form.get("K")),
-            "G1": int(request.form.get("G1")),
-            "G25": int(request.form.get("G25")),
-            "G6": int(request.form.get("G6")),
-            "G78": int(request.form.get("G78")),
-            "G912": int(request.form.get("G912")),
-        }
+def test():
+    form = NEJAForm()
+    if not form.validate_on_submit():
+        print("not validated")
+        return render_template("form.html", form=form)
 
-        tuition = Tuition("2025tuition.csv")
-        family = Family(agi, students)
+    tuition = Tuition("2025tuition.csv")
+    students = {
+        "ECC5F": int(form.ECC5F.data),
+        "ECC3F": int(form.ECC3F.data),
+        "ECC5H": int(form.ECC5H.data),
+        "ECC3H": int(form.ECC3H.data),
+        "ECCPP": int(form.ECCPP.data),
+        "K": int(form.K.data),
+        "G1": int(form.G1.data),
+        "G25": int(form.G25.data),
+        "G6": int(form.G6.data),
+        "G78": int(form.G78.data),
+        "G912": int(form.G912.data),
+    }
+    family = Family(form.agi.data, students)
 
-        print("subsidy", subsidy, bool(subsidy))
-        total = tuition.get_total_tuition(family, subsidy=bool(subsidy))
+    total = tuition.get_total_tuition(family, subsidy=bool(form.subsidy.data))
+    total = f"${total:,.2f}"
 
-        return render_template(
-            "index.html",
-            total=f"${total:,.2f}",
-            agi=agi,
-            subsidy=subsidy,
-            **students,
-        )
-
-    return render_template("index.html", agi=100000, total=None)
+    return render_template("form.html", form=form, total=total)
 
 
 if __name__ == "__main__":

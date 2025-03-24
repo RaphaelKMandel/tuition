@@ -122,22 +122,21 @@
                 </tr>
             </tbody>
         </table>
-
             {{form.submit()}}
+            <label>Show Details?</label>
+            {{form.debug()}}
     </form>
 
-    {% if total %}
-        <h2>Your Inputs</h2>
-        {% for key, value in students.items() %}
-            {% if value %}
-                {{key}}={{value}}
-            {% endif %}
+    {% if debug %}
+        <h2>Your Results</h2>
+        {% for line in debug_data %}
+            <h3>{{line}}</h3>
         {% endfor %}
-        <h2>Your NEJA Tuition Cap is: {{max_tuition}}</h2>
-        <h2>Yout Total Tuition is: {{subtotal}}</h2>
-        <h2>Yout Total Cappable Tuition is: {{cappable}}</h2>
-        <h2>Yout Total Uncappable Tuition is: {{uncappable}}</h2>
-        <h2>Your Total NEJA Tuition is: {{total}} </h2>
+    {% elif output_data %}
+        <h2>Your Results</h2>
+        {% for line in output_data %}
+            <h3>{{line}}</h3>
+        {% endfor %}
     {% endif %}
 </body>
 </html>

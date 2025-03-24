@@ -1,25 +1,39 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, BooleanField, SelectField, SubmitField
+from wtforms import IntegerField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
-
-NOS = [0, 1, 2, 3, 4, 5, 6]
 
 
 class NEJAForm(FlaskForm):
     AGI = IntegerField(
-        "AGI", default=100000, render_kw={"step": 1000}, validators=[DataRequired(), NumberRange(min=0, max=10_000_000)]
+        "AGI",
+        default=100000,
+        render_kw={"step": 1000},
+        validators=[DataRequired(), NumberRange(min=0, max=10_000_000)],
     )
-    subsidy = BooleanField("subsidy")
-    ECC5F = IntegerField(label="ECC5F", default=0, validators=[NumberRange(min=0,max=10)])
-    ECC3F = SelectField(label="ECC3F", choices=NOS)
-    ECC5H = SelectField(label="ECC5H", choices=NOS)
-    ECC3H = SelectField(label="ECC3H", choices=NOS)
-    ECCPP = SelectField(label="ECCPP", choices=NOS)
-    K = SelectField(label="K", choices=NOS)
-    G1 = SelectField(label="G1", choices=NOS)
-    G25 = SelectField(label="G25", choices=NOS)
-    G6 = SelectField(label="G6", choices=NOS)
-    G78 = SelectField(label="G78", choices=NOS)
-    G912 = SelectField(label="G912", choices=NOS)
+    subsidy = BooleanField("subsidy", default=True)
+    debug = BooleanField("debug")
+    ECC5F = IntegerField(
+        label="ECC5F", default=0, validators=[NumberRange(min=0, max=10)]
+    )
+    ECC3F = IntegerField(
+        label="ECC3F", default=0, validators=[NumberRange(min=0, max=10)]
+    )
+    ECC5H = IntegerField(
+        label="ECC5H", default=0, validators=[NumberRange(min=0, max=10)]
+    )
+    ECC3H = IntegerField(
+        label="ECC3H", default=0, validators=[NumberRange(min=0, max=10)]
+    )
+    ECCPP = IntegerField(
+        label="ECCPP", default=0, validators=[NumberRange(min=0, max=10)]
+    )
+    K = IntegerField(label="K", default=0, validators=[NumberRange(min=0, max=10)])
+    G1 = IntegerField(label="G1", default=0, validators=[NumberRange(min=0, max=10)])
+    G25 = IntegerField(label="G25", default=0, validators=[NumberRange(min=0, max=10)])
+    G6 = IntegerField(label="G6", default=0, validators=[NumberRange(min=0, max=10)])
+    G78 = IntegerField(label="G78", default=0, validators=[NumberRange(min=0, max=10)])
+    G912 = IntegerField(
+        label="G912", default=0, validators=[NumberRange(min=0, max=10)]
+    )
 
-    submit = SubmitField("Submit Please")
+    submit = SubmitField("Submit")

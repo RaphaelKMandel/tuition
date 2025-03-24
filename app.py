@@ -28,7 +28,10 @@ def home():
         total = tuition.get_total_tuition(family)
 
         return render_template(
-            "index.html", total=f"${total:,.2f}", agi=agi, **students
+            "index.html",
+            total=f"${total:,.2f}",
+            agi=agi,
+            **students,
         )
 
     return render_template("index.html", agi=100000, total=None)

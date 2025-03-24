@@ -46,7 +46,6 @@ def main():
     cappable, uncappable = tuition.get_tuitions(family, subsidy)
 
     total = tuition.get_total_tuition(family, subsidy=subsidy)
-    print(form.ECC5F())
 
     return render_template(
         "form.html",

@@ -53,7 +53,6 @@ if __name__ == "__main__":
     from matplotlib.pyplot import subplots, show
 
     tuition = Tuition("2025tuition.csv")
-
     students = {"ECC5F": 1, "G25": 1, "G78": 1}
     print(tuition.get_total_tuition(Family(200000, students)))
     x = []

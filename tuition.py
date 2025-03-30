@@ -66,6 +66,8 @@ if __name__ == "__main__":
 
     fig, ax = subplots()
     ax.plot(x, y)
-    ax.plot(x, z)
+    # ax.plot(x, z)
     ax.grid()
+    ax.set_xlabel("AGI (k$)")
+    ax.set_ylabel("Max Tuition (k$)")
     show()

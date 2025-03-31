@@ -23,7 +23,7 @@ def main():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition(f"{HOME}/tuition/2025tuition.csv")
+    tuition = Tuition(f"{HOME}/Tuition/2025tuition.csv")
 
     AGI = int(form.AGI.data)
     students = {
@@ -61,7 +61,7 @@ def main():
 def get_debug(AGI, percent, max_tuition, cappable, uncappable, total, students):
     output = []
     output.append(
-        f"At an AGI of {format(AGI)}, your maximum qualified NEJA tuition is capped at {percent*100}% of AGI, or {format(max_tuition)}"
+        f"At an AGI of {format(AGI)}, your maximum qualified NEJA tuition is capped at {round(percent*100,2)}% of AGI, or {format(max_tuition)}"
     )
 
     # output.append("Your tuition expenses are as follows:")

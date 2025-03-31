@@ -1,18 +1,15 @@
+from rates import WaterFall, Progressive
+
+
 class Family:
     def __init__(self, agi: int, students: dict):
         self.agi = agi
         self.students = students
-        self.rate = self.get_rate()
+        self.rate = (
+            Progressive([300_000, 400_000], [0.15, 0.175, 0.20]).evaluate(agi)
+            / self.agi
+        )
         self.max_tuition = self.rate * self.agi
-
-    def get_rate(self):
-        if self.agi < 300_000:
-            return 0.15
-
-        if self.agi < 400_000:
-            return 0.175
-
-        return 0.20
 
 
 class Tuition:

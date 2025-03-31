@@ -4,27 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEJA Tuition Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>NEJA Tuition Calculator</h1>
+    <h1 class="label-font">NEJA Tuition Calculator</h1>
 
     <form method="POST">
         {{ form.hidden_tag() }}
         <table>
             <thead>
                 <tr>
-                    <th>Grade</th>
-                    <th>Number of Students</th>
+                    <th class="label-font">Grade</th>
+                    <th class="label-font">Number of Students</th>
                 </tr>
             </thead>
             <tbody>
-                <label>Family AGI (Previous Year):</label>
+                <label class="label-font">Family AGI (Previous Year):</label>
                     {{form.AGI()}}
-                <label>Use Subsidy Rates? </label>
+                <label class="label-font">Use Subsidy Rates? </label>
                     {{form.subsidy()}}
                 <tr>
                     <td>
-                        <label>ECC: 5 Full Days</label>
+                        <label class="label-font">ECC: 5 Full Days</label>
                         </td>
                     <td>
                       {{form.ECC5F()}}
@@ -33,7 +34,7 @@
 
                 <tr>
                     <td>
-                        <label>ECC: 3 Full Days</label>
+                        <label class="label-font">ECC: 3 Full Days</label>
                         </td>
                     <td>
                       {{form.ECC3F()}}
@@ -42,7 +43,7 @@
 
                 <tr>
                     <td>
-                        <label>ECC: 5 Half Days</label>
+                        <label class="label-font">ECC: 5 Half Days</label>
                         </td>
                     <td>
                       {{form.ECC5H()}}
@@ -51,7 +52,7 @@
 
                 <tr>
                     <td>
-                        <label>ECC: 3 Half Days</label>
+                        <label class="label-font">ECC: 3 Half Days</label>
                         </td>
                     <td>
                             {{form.ECC3H()}}
@@ -60,7 +61,7 @@
 
                 <tr>
                     <td>
-                        <label>ECC Extra Care</label>
+                        <label class="label-font">ECC Extra Care</label>
                         </td>
                     <td>
                             {{form.ECCPP()}}
@@ -69,7 +70,7 @@
 
                 <tr>
                     <td>
-                        <label>Kindergarden</label>
+                        <label class="label-font">Kindergarden</label>
                         </td>
                     <td>
                             {{form.K()}}
@@ -78,7 +79,7 @@
 
                 <tr>
                     <td>
-                        <label>1st Grade</label>
+                        <label class="label-font">1st Grade</label>
                         </td>
                     <td>
                             {{form.G1()}}
@@ -87,7 +88,7 @@
 
                 <tr>
                     <td>
-                        <label>Grades 2-5</label>
+                        <label class="label-font">Grades 2-5</label>
                         </td>
                     <td>
                             {{form.G25()}}
@@ -96,7 +97,7 @@
 
                 <tr>
                     <td>
-                        <label>Grade 6</label>
+                        <label class="label-font">Grade 6</label>
                         </td>
                     <td>
                             {{form.G6()}}
@@ -105,7 +106,7 @@
 
                 <tr>
                     <td>
-                        <label>Grade 7-8</label>
+                        <label class="label-font">Grade 7-8</label>
                         </td>
                     <td>
                             {{form.G78()}}
@@ -114,7 +115,7 @@
 
                 <tr>
                     <td>
-                        <label>Grade 9-12</label>
+                        <label class="label-font">Grade 9-12</label>
                         </td>
                     <td>
                             {{form.G912()}}
@@ -123,19 +124,19 @@
             </tbody>
         </table>
             {{form.submit()}}
-            <label>Show Details?</label>
+            <label class="label-font">Show Details?</label>
             {{form.debug()}}
     </form>
 
     {% if debug %}
-        <h2>Your Results</h2>
+        <h2 class="label-font">Your Results</h2>
         {% for line in debug_data %}
-            <h3>{{line}}</h3>
+            <h3 class="label-font">{{line}}</h3>
         {% endfor %}
     {% elif output_data %}
-        <h2>Your Results</h2>
+        <h2 class="label-font">Your Results</h2>
         {% for line in output_data %}
-            <h3>{{line}}</h3>
+            <h3 class="label-font">{{line}}</h3>
         {% endfor %}
     {% endif %}
 </body>

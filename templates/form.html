@@ -131,7 +131,12 @@
     {% if debug %}
         <h2 class="label-font">Your Results</h2>
         {% for line in debug_data %}
-            <h3 class="label-font">{{line}}</h3>
+            {% if line.startswith(" ") %}
+                    <h3 class="indent-font">{{line}}</h3>
+            {% else %}
+                    <h3 class="label-font">{{line}}</h3>
+            {% endif %}
+            
         {% endfor %}
     {% elif output_data %}
         <h2 class="label-font">Your Results</h2>

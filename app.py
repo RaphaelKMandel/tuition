@@ -73,7 +73,7 @@ def get_debug(cap_data, tuition_data):
         count = data["count"]
         if count > 0:
             output.append(
-                f" {count} students in {grade} @ {data['each']}/student for a sub-total of {data['tuition']} of which {data['qualified']} is qualified for the tuition cap."
+                f" {count} student(s) in {grade} @ {data['each']}/student for a sub-total of {data['tuition']} of which {data['qualified']} is qualified for the tuition cap."
             )
 
     output.append(

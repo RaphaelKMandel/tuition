@@ -2,7 +2,7 @@ import pathlib
 from flask import Flask, render_template, request
 
 
-from tuition import Tuition, Progressive
+from tuition import Tuition, Progressive, WaterFall
 from index import NEJAForm
 
 
@@ -20,10 +20,10 @@ def main():
         return render_template("form.html", form=form)
 
     tuition = Tuition(f"{HOME}/tuition/2025tuition.csv")
-    prog = Progressive([300_000, 400_000], [0.15, 0.175, 0.2])
+    rates = WaterFall([300_000, 400_000], [0.15, 0.175, 0.2])
 
     AGI = int(form.AGI.data)
-    cap_data = prog.evaluate(AGI)
+    cap_data = rates.evaluate(AGI)
 
     students = {
         "ECC 5 Full Days": int(form.ECC5F.data),

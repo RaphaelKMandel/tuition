@@ -45,6 +45,35 @@ class Progressive:
         return results
 
 
+class WaterFall:
+    def __init__(self, thresholds, rates):
+        self.thresholds = [Dollar(x)
+                           for x in thresholds + [float("inf")]]
+        self.rates = rates
+
+    def evaluate(self, amount):
+        results = {"AGI": Dollar(amount), "bands": []}
+        for rate, threshold in zip(self.rates, self.thresholds):
+            if amount <= threshold:
+                result = {
+                    "band": [Dollar(0), threshold],
+                    "rate": Percent(rate),
+                    "diff": Dollar(amount),
+                    "value": Dollar(rate * amount)
+                    }
+                break
+
+
+        results["bands"].append(result)
+        max_tuition = 0
+        for result in results["bands"]:
+            max_tuition += result["value"]
+
+        results["rate"] = Percent(max_tuition / amount)
+        results["max tuition"] = Dollar(max_tuition)
+
+        return results
+
 class Tuition:
     def __init__(self, tuition_file):
         with open(tuition_file, "r") as f:

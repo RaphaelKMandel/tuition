@@ -60,9 +60,14 @@ def get_debug(cap_data, tuition_data):
     output.append(f"At an AGI of {AGI}:")
 
     for band in cap_data["bands"]:
-        output.append(
-            f" Income between {band['band'][0]}-{band['band'][1]} is considered at {band['rate']}. You earned {band['diff']} resulting in {band['value']}"
-        )
+        if len(band["band"]) == 1:
+            output.append(
+                f" Income above {band['band'][0]} is considered at {band['rate']}. You earned {band['diff']} resulting in {band['value']}"
+            )
+        else:
+            output.append(
+                f" Income between {band['band'][0]}-{band['band'][1]} is considered at {band['rate']}. You earned {band['diff']} resulting in {band['value']}"
+            )
 
     output.append(
         f"Summing the values in each band results in your maximum qualified tuition: {cap_data['max tuition']}"

@@ -47,21 +47,29 @@ class Progressive:
 
 class WaterFall:
     def __init__(self, thresholds, rates):
-        self.thresholds = [Dollar(x)
-                           for x in thresholds + [float("inf")]]
+        self.thresholds = [Dollar(x) for x in [0] + thresholds]
         self.rates = rates
 
     def evaluate(self, amount):
         results = {"AGI": Dollar(amount), "bands": []}
-        for rate, threshold in zip(self.rates, self.thresholds):
-            if amount <= threshold:
+        for n, (rate, threshold) in enumerate(zip(self.rates,
+            self.thresholds[1:]), start=1):
+            if amount < threshold:
                 result = {
-                    "band": [Dollar(0), threshold],
+                    "band": [self.thresholds[n-1], threshold],
                     "rate": Percent(rate),
                     "diff": Dollar(amount),
                     "value": Dollar(rate * amount)
                     }
                 break
+        else:
+            rate = self.rates[-1]
+            result = {
+                    "band": [self.thresholds[-1]],
+                    "rate": Percent(rate),
+                    "diff": Dollar(amount),
+                    "value": Dollar(rate * amount)
+                    }
 
 
         results["bands"].append(result)

@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, BooleanField, SubmitField
+from wtforms import DecimalField, IntegerField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 
 class NEJAForm(FlaskForm):
-    AGI = IntegerField(
+    AGI = DecimalField(
         "AGI",
         default=100000,
-        render_kw={"step": 1000},
+        render_kw={"type": "text", "inputmode": "numeric"},
         validators=[DataRequired(), NumberRange(min=0, max=10_000_000)],
     )
     subsidy = BooleanField("subsidy", default=True)

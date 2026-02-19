@@ -1,7 +1,5 @@
 import pathlib
-
 from nicegui import ui
-
 from tuition import Tuition, WaterFall
 
 # Resolve tuition CSV: prefer home/tuition/, fallback to script directory
@@ -98,9 +96,7 @@ def main():
             num.props("min=0 max=10 dense outlined")
             num.classes("p-0")
             counts[key] = num
-
     
-
     def calculate():
         try:
             agi_val = int(float(agi.value or 0))
@@ -138,4 +134,4 @@ def main():
 
 
 if __name__ in {"__main__", "__mp_main__"}:
-    ui.run(title="2026 NEJA Tuition Calculator", dark=False)
+    ui.run(title="2026 NEJA Tuition Calculator", host="0.0.0.0", dark=False)

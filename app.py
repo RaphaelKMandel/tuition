@@ -1,114 +1,141 @@
 import pathlib
-from flask import Flask, render_template, request
 
+from nicegui import ui
 
-from tuition import Tuition, Progressive, WaterFall
-from index import NEJAForm
+from tuition import Tuition, WaterFall
 
-
+# Resolve tuition CSV: prefer home/tuition/, fallback to script directory
 HOME = pathlib.Path.home()
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+TUITION_CSV = HOME / "tuition" / "2026tuition.csv"
+if not TUITION_CSV.exists():
+    TUITION_CSV = SCRIPT_DIR / "2026tuition.csv"
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "191234325129341234"
-
-
-@app.route("/", methods=["GET", "POST"])
-def main():
-    form = NEJAForm()
-    if not form.validate_on_submit():
-        print("not validated")
-        return render_template("form.html", form=form)
-
-    tuition = Tuition(f"{HOME}/tuition/2026tuition.csv")
-    rates = WaterFall([300_000, 400_000], [0.15, 0.175, 0.2])
-
-    AGI = int(form.AGI.data)
-    cap_data = rates.evaluate(AGI)
-
-    students = {
-        "ECC 5 Full Days": int(form.ECC5F.data),
-        "ECC 3 Full Days": int(form.ECC3F.data),
-        "ECC 5 Half Days": int(form.ECC5H.data),
-        "ECC 3 Half Days": int(form.ECC3H.data),
-        "ECC Extended Hours": int(form.ECCPP.data),
-        "Kindergarden": int(form.K.data),
-        "Grade 1": int(form.G1.data),
-        "Grades 2-5": int(form.G25.data),
-        "Grade 6": int(form.G6.data),
-        "Grades 7-8": int(form.G78.data),
-        "Grades 9-12": int(form.G912.data),
-    }
-
-    subsidized = bool(form.subsidy.data)
-    debug = bool(form.debug.data)
-    tuition_data = tuition.get_tuitions(
-        students, cap_data["max tuition"], subsidized=subsidized
-    )
-
-    return render_template(
-        "form.html",
-        form=form,
-        output_data=get_output(tuition_data["totals"]["total"]),
-        debug=debug,
-        debug_data=get_debug(cap_data, tuition_data),
-    )
+GRADE_LABELS = [
+    ("ECC 5 Full Days", "ECC5F"),
+    ("ECC 3 Full Days", "ECC3F"),
+    ("ECC 5 Half Days", "ECC5H"),
+    ("ECC 3 Half Days", "ECC3H"),
+    ("ECC Extended Hours", "ECCPP"),
+    ("Kindergarden", "K"),
+    ("Grade 1", "G1"),
+    ("Grades 2-5", "G25"),
+    ("Grade 6", "G6"),
+    ("Grades 7-8", "G78"),
+    ("Grades 9-12", "G912"),
+]
 
 
 def get_debug(cap_data, tuition_data):
-    output = []
+    lines = []
     AGI = cap_data["AGI"]
-    output.append(f"At an AGI of {AGI}:")
-
+    lines.append(f"At an AGI of {AGI}:")
     for band in cap_data["bands"]:
         if len(band["band"]) == 1:
-            output.append(
-                f" Income above {band['band'][0]} is considered at {band['rate']}. You earned {band['diff']} resulting in {band['value']}"
+            lines.append(
+                f"    Income above {band['band'][0]} is considered at {band['rate']}. "
+                f"You earned {band['diff']} resulting in {band['value']}"
             )
         else:
-            output.append(
-                f" Income between {band['band'][0]}-{band['band'][1]} is considered at {band['rate']}. You earned {band['diff']} resulting in {band['value']}"
+            lines.append(
+                f"    Income between {band['band'][0]}-{band['band'][1]} is considered at {band['rate']}. "
+                f"You earned {band['diff']} resulting in {band['value']}"
             )
-
-    output.append(
+    lines.append(
         f"Summing the values in each band results in your maximum qualified tuition: {cap_data['max tuition']}"
     )
-
-    output.append("Your tuition expenses are as follows:")
+    lines.append("Your tuition expenses are as follows:")
     for grade, data in tuition_data["grades"].items():
         count = data["count"]
         if count > 0:
-            output.append(
-                f" {count} student(s) in {grade} @ {data['each']}/student for a sub-total of {data['tuition']} of which {data['qualified']} is qualified for the tuition cap."
+            lines.append(
+                f"    {count} student(s) in {grade} @ {data['each']}/student for a sub-total of {data['tuition']} "
+                f"of which {data['qualified']} is qualified for the tuition cap."
             )
-
-    output.append(
-        f"Your unqualified tuition expenses total {tuition_data['totals']['unqualified']}. These expenses are not subject to a tuition cap."
+    lines.append(
+        f"Your unqualified tuition expenses total {tuition_data['totals']['unqualified']}. "
+        "These expenses are not subject to a tuition cap."
     )
     qualified = tuition_data["totals"]["qualified"]
     max_tuition = cap_data["max tuition"]
     total = tuition_data["totals"]["total"]
-
     if qualified > max_tuition:
-        output.append(
+        lines.append(
             f"Your qualified tuition expenses total {qualified}, which will be capped to your max tuition: {max_tuition}"
         )
     else:
-        output.append(
-            f"Your qualified tuition expenses total: {qualified}. Because of your AGI, these tuition expenses will not be capped."
+        lines.append(
+            f"Your qualified tuition expenses total: {qualified}. "
+            "Because of your AGI, these tuition expenses will not be capped."
         )
-
-    output.append(
+    lines.append(
         f"Summing your qualified and unqualified tuitions results in your total tuition: {total}"
     )
-
-    return output
-
-
-def get_output(total):
-    output = []
-    output.append(f"Your Total Tuition is {total}")
-    return output
+    return lines
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@ui.page("/")
+def main():
+    ui.label("2026 NEJA Tuition Calculator").classes("text-2xl font-bold")
+    ui.separator()
+
+    with ui.row().classes("items-center gap-y-0 gap-x-2 p-0").style("grid-template-columns: minmax(0, max-content) 4rem"):
+        ui.label("Family AGI (Previous Year):").classes("font-bold text-xl")
+        agi = ui.number(value=100_000, format="%.0f")
+        subsidy = ui.checkbox("Use subsidy rates?", value=True)
+
+
+    counts = {}
+    # Compact 2-col grid: label left, number right; fixed col width so numbers line up; no padding
+    with ui.grid(columns=2).classes("items-center gap-y-0 gap-x-2 p-0").style("grid-template-columns: minmax(0, max-content) 4rem"):
+        ui.label("Grade").classes("font-bold text-xl p-0")
+        ui.label("# Students").classes("font-bold text-xl p-0 w-32")
+        ui.separator()
+        ui.separator()
+        for label, key in GRADE_LABELS:
+            ui.label(label).classes("p-0")
+            num = ui.number(value=0, format="%.0f").classes("w-32")
+            num.props("min=0 max=10 dense outlined")
+            num.classes("p-0")
+            counts[key] = num
+
+    
+
+    def calculate():
+        try:
+            agi_val = int(float(agi.value or 0))
+        except (TypeError, ValueError):
+            agi_val = 0
+        agi_val = max(0, min(10_000_000, agi_val))
+
+        students = {
+            label: max(0, min(10, int((counts[key].value or 0))))
+            for label, key in GRADE_LABELS
+        }
+
+        tuition = Tuition(str(TUITION_CSV))
+        rates = WaterFall([300_000, 400_000], [0.15, 0.175, 0.2])
+        cap_data = rates.evaluate(agi_val)
+        subsidized = subsidy.value
+        tuition_data = tuition.get_tuitions(
+            students, cap_data["max tuition"], subsidized=subsidized
+        )
+        total = tuition_data["totals"]["total"]
+
+        output_container.clear()
+        with output_container:
+            ui.label("Your Results")
+            ui.label(f"Your Total Tuition is {total}")
+            if debug.value:
+                for line in get_debug(cap_data, tuition_data):
+                    ui.label(line).style("white-space: pre-wrap")
+
+    with ui.row():
+        ui.button("Calculate", on_click=calculate)
+        debug = ui.checkbox("Show details?", value=False)
+
+    output_container = ui.column()
+
+
+if __name__ in {"__main__", "__mp_main__"}:
+    ui.run(title="2026 NEJA Tuition Calculator", dark=False)

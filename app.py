@@ -19,7 +19,7 @@ def main():
         print("not validated")
         return render_template("form.html", form=form)
 
-    tuition = Tuition(f"{HOME}/tuition/2025tuition.csv")
+    tuition = Tuition(f"{HOME}/tuition/2026tuition.csv")
     rates = WaterFall([300_000, 400_000], [0.15, 0.175, 0.2])
 
     AGI = int(form.AGI.data)

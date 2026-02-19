@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEJA Tuition Calculator</title>
+    <title>2026 NEJA Tuition Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1 class="label-font">NEJA Tuition Calculator</h1>
+    <h1 class="label-font">2026 NEJA Tuition Calculator</h1>
 
     <form method="POST">
         {{ form.hidden_tag() }}
@@ -136,7 +136,7 @@
             {% else %}
                     <h3 class="label-font">{{line}}</h3>
             {% endif %}
-            
+
         {% endfor %}
     {% elif output_data %}
         <h2 class="label-font">Your Results</h2>

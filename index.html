@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 NEJA Tuition Calculator</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 1rem; max-width: 32rem; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    label { display: block; margin-top: 0.5rem; }
+    .row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .grade-row { display: grid; grid-template-columns: 1fr 5.5rem; align-items: center; gap: 0.5rem; max-width: 24rem; }
+    .grade-row label { margin: 0; }
+    input[type="number"] { width: 4rem; box-sizing: border-box; }
+    #results { margin-top: 1rem; }
+    #results h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+    #results p { margin: 0.25rem 0; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>2026 NEJA Tuition Calculator</h1>
+
+  <form id="form" onsubmit="calculate(event)">
+    <div class="row">
+      <label for="agi" style="margin: 0;">Family AGI (Previous Year):</label>
+      <input type="number" id="agi" value="100000" min="0" max="10000000" step="1">
+      <label style="margin: 0;"><input type="checkbox" id="subsidy" checked> Use subsidy rates?</label>
+    </div>
+    <div class="grade-row">
+      <label>Grade</label>
+      <label style="margin: 0; text-align: right;"># Students</label>
+    </div>
+    <div class="grade-row">
+      <label for="n-ECC5F">ECC 5 Full Days</label>
+      <input type="number" id="n-ECC5F" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-ECC3F">ECC 3 Full Days</label>
+      <input type="number" id="n-ECC3F" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-ECC5H">ECC 5 Half Days</label>
+      <input type="number" id="n-ECC5H" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-ECC3H">ECC 3 Half Days</label>
+      <input type="number" id="n-ECC3H" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-ECCPP">ECC Extended Hours</label>
+      <input type="number" id="n-ECCPP" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-K">Kindergarden</label>
+      <input type="number" id="n-K" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-G1">Grade 1</label>
+      <input type="number" id="n-G1" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-G25">Grades 2-5</label>
+      <input type="number" id="n-G25" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-G6">Grade 6</label>
+      <input type="number" id="n-G6" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-G78">Grades 7-8</label>
+      <input type="number" id="n-G78" min="0" max="10" value="0">
+    </div>
+    <div class="grade-row">
+      <label for="n-G912">Grades 9-12</label>
+      <input type="number" id="n-G912" min="0" max="10" value="0">
+    </div>
+    <div class="row" style="margin-top: 0.75rem;">
+      <button type="submit">Calculate</button>
+      <label><input type="checkbox" id="debug"> Show details?</label>
+    </div>
+  </form>
+
+  <div id="results"></div>
+
+  <script src="app.js"></script>
+  <script>
+    function calculate(e) {
+      e.preventDefault();
+      const agi = Math.max(0, Math.min(1e7, Number(document.getElementById('agi').value) || 0));
+      const subsidy = document.getElementById('subsidy').checked;
+      const showDebug = document.getElementById('debug').checked;
+      const students = {
+        'ECC 5 Full Days': clamp(Number(document.getElementById('n-ECC5F').value) || 0, 0, 10),
+        'ECC 3 Full Days': clamp(Number(document.getElementById('n-ECC3F').value) || 0, 0, 10),
+        'ECC 5 Half Days': clamp(Number(document.getElementById('n-ECC5H').value) || 0, 0, 10),
+        'ECC 3 Half Days': clamp(Number(document.getElementById('n-ECC3H').value) || 0, 0, 10),
+        'ECC Extended Hours': clamp(Number(document.getElementById('n-ECCPP').value) || 0, 0, 10),
+        'Kindergarden': clamp(Number(document.getElementById('n-K').value) || 0, 0, 10),
+        'Grade 1': clamp(Number(document.getElementById('n-G1').value) || 0, 0, 10),
+        'Grades 2-5': clamp(Number(document.getElementById('n-G25').value) || 0, 0, 10),
+        'Grade 6': clamp(Number(document.getElementById('n-G6').value) || 0, 0, 10),
+        'Grades 7-8': clamp(Number(document.getElementById('n-G78').value) || 0, 0, 10),
+        'Grades 9-12': clamp(Number(document.getElementById('n-G912').value) || 0, 0, 10)
+      };
+      const capData = waterfallEvaluate(agi);
+      const tuitionData = getTuitions(students, capData.maxTuition, subsidy);
+      const total = tuitionData.totals.total;
+      const el = document.getElementById('results');
+      el.innerHTML = '';
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Your Results';
+      el.appendChild(h2);
+      const p = document.createElement('p');
+      p.textContent = 'Your Total Tuition is ' + formatDollar(total);
+      el.appendChild(p);
+      if (showDebug) {
+        getDebugLines(capData, tuitionData).forEach(function (line) {
+          const pp = document.createElement('p');
+          pp.textContent = line;
+          el.appendChild(pp);
+        });
+      }
+    }
+    function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  </script>
+</body>
+</html>
